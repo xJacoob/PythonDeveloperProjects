@@ -1,5 +1,5 @@
 # Duskers - Text-Based Survival Strategy
-# Project from HyperSkill
+This project was developed as a part of the JetBrains Academy (Hyperskill) curriculum to practice and implement advanced Object-Oriented Programming concepts in Python.
 ## About the Project
 Duskers is a text-based strategic survival game built entirely in Python. The core focus of this project was to implement a clean, modular Object-Oriented Programming (OOP) architecture rather than relying on a single monolithic script. It features terminal-based exploration, resource management, and persistent game states.
 
