@@ -1,5 +1,5 @@
 # University Admission Procedure (Algorithmic Sorting Tool)
-# Project from HyperSkill
+This project was developed as a part of the JetBrains Academy (Hyperskill) curriculum to practice and implement advanced Object-Oriented Programming concepts in Python.
 ## About the Project
 This algorithmic tool automates the complex process of allocating student candidates to various university departments. The project demonstrates strong skills in multi-criteria sorting, file I/O operations, and managing complex relationships between multiple objects in Python.
 
