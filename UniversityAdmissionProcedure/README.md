@@ -1,29 +1,30 @@
-# Duskers - Text-Based Survival Strategy
-
+# University Admission Procedure (Algorithmic Sorting Tool)
+# Project from HyperSkill
 ## About the Project
-Duskers is a text-based strategic survival game built entirely in Python. The core focus of this project was to implement a clean, modular Object-Oriented Programming (OOP) architecture rather than relying on a single monolithic script. It features terminal-based exploration, resource management, and persistent game states.
+This algorithmic tool automates the complex process of allocating student candidates to various university departments. The project demonstrates strong skills in multi-criteria sorting, file I/O operations, and managing complex relationships between multiple objects in Python.
 
 ## Key Features
-* **Modular OOP Design**: Separation of concerns using distinct classes for game logic, menus, and entities.
-* **Persistent State**: Game progress saving and loading utilizing `JSON`.
-* **Command Line Interface**: Handled via Python's `argparse` module.
-* **Resource Optimization**: Implementation of Python generators for efficient data handling.
+* **Multi-Criteria Sorting**: Implements custom sorting algorithms to rank candidates based on their exam scores across different subjects.
+* **Data Parsing (I/O)**: Efficiently reads large sets of candidate data from raw text files and dynamically processes them.
+* **Automated Allocation**: Distributes accepted students into specific departments based on their capacity and candidate rankings.
+* **Report Generation**: Automatically generates output text files for each department containing the final list of admitted students.
 
 ## Project Structure
-The repository is divided into logical components:
-* `duskers.py` - The main entry point of the game.
-* `Game.py` - Core game loop, state management, and primary logic.
-* `Menu.py` - Handles the CLI-based user interface and input validation.
-* `Robots.py` - Class definitions and behaviors for robotic entities within the game.
-* `robotv1` / `title` - Assets and ASCII art resources for the terminal display.
+* `univeristy.py` - The main executable script that triggers the admission process.
+* `Recruitment.py` - Contains the core algorithmic logic and sorting mechanisms.
+* `Candidate.py` - Data model representing an individual applicant (stores scores, preferences, etc.).
+* `Department.py` - Data model representing a university faculty (handles capacity and acceptance logic).
+* `applicants.txt` - Raw input data containing the pool of candidates.
+* `biotech.txt`, `chemistry.txt`, `engineering.txt`, `mathematics.txt`, `physics.txt` - Automatically generated output files representing the final admission lists.
 
 ## How to Run
-To start the game, simply run the main script from your terminal:
+Ensure `applicants.txt` is in the root directory, then execute:
 \`\`\`bash
-python duskers.py
+python univeristy.py
 \`\`\`
+The script will process the data and update/create the specific department `.txt` files with the results.
 
 ## Technologies Used
 * Python 3
-* JSON
-* Argparse
+* File I/O Operations
+* Object-Oriented Programming (OOP)
