@@ -26,5 +26,8 @@ Implementation of the classic game with grid management and win-condition valida
 ### 8. University Admission Procedure
 A data-processing script for managing student applications and ranking candidates based on exam results.
 
+### 9. Easy Rider Bus Company
+Validating JSON data from documentation using regular expressions, sets operations (intersection, difference) and the itertools module.
+
 ---
 **Objective:** Mastering Python logic, Object-Oriented Programming (OOP), and data handling.
