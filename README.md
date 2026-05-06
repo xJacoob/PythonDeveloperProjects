@@ -1,4 +1,4 @@
-# Python Fundamentals Projects 🐍
+# Python Fundamentals Small Projects 🐍
 
 ## Projects Overview
 
