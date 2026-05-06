@@ -29,5 +29,8 @@ A data-processing script for managing student applications and ranking candidate
 ### 9. Easy Rider Bus Company
 Validating JSON data from documentation using regular expressions, sets operations (intersection, difference) and the itertools module.
 
+### 10. File Manager
+Implemented commads like cp, mv, rm, ls etc. with os and shutil module.
+
 ---
 **Objective:** Mastering Python logic, Object-Oriented Programming (OOP), and data handling.
