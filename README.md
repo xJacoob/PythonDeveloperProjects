@@ -30,7 +30,7 @@ A data-processing script for managing student applications and ranking candidate
 Validating JSON data from documentation using regular expressions, sets operations (intersection, difference) and the itertools module.
 
 ### 10. File Manager
-Implemented commads like cp, mv, rm, ls etc. with os and shutil module(unfinished).
+Implementation of basic shell commands like cp, mv, rm, and ls using the os and shutil modules (unfinished).
 
 ---
 **Objective:** Mastering Python logic, Object-Oriented Programming (OOP), and data handling.
