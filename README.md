@@ -32,5 +32,8 @@ Validating JSON data from documentation using regular expressions, sets operatio
 ### 10. File Manager
 Implementation of basic shell commands like cp, mv, rm, and ls using the os and shutil modules (unfinished).
 
+### 11. Learning Progress Tracker
+A moduklar Object-Oriented application for managing student enrollments and grades. Features regex-based credential validation, data sorting, automated notification logic using sets and simple unit tests.
+
 ---
 **Objective:** Mastering Python logic, Object-Oriented Programming (OOP), and data handling.
