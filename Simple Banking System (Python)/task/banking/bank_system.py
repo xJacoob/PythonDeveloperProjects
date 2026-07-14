@@ -1,9 +1,10 @@
 from card import Card
+from data_base import DataBase
 import random
 
 class BankSystem:
     def __init__(self):
-        self.card_list = []
+        self.db = DataBase()
 
     @staticmethod
     def generate_account_number() -> str:
@@ -12,20 +13,18 @@ class BankSystem:
         return formated_account_number
 
     def check_if_unique(self) -> str:
-        existing_account_numbers = {card.account_number for card in self.card_list}
         account_number = self.generate_account_number()
-
-        while account_number in existing_account_numbers:
+        pattern = Card.card_prefix + account_number + '%'
+        while self.db.find_by_partial_number(pattern) is not None:
             account_number = self.generate_account_number()
-
+            pattern = Card.card_prefix + account_number + '%'
         return account_number
 
     def log_into_account(self, user_card_number, user_pin) -> tuple:
-        for card in self.card_list:
-            if user_card_number == card.card_number and user_pin == card.pin:
-                return True, card
-        else:
-            return False, None
+        account = self.db.find_by_number_and_pin(user_card_number, user_pin)
+        if account is not None:
+            return True, account
+        return False, None
 
     def menu(self):
         while True:
@@ -34,7 +33,7 @@ class BankSystem:
             if user_input == '1':
                 account_number = self.check_if_unique()
                 card = Card(account_number)
-                self.card_list.append(card)
+                self.db.add_card(card.card_number, card.pin)
                 print(f"Your card has been created\n{card}")
             elif user_input == '2':
                 print("Enter your card number:")
@@ -47,7 +46,7 @@ class BankSystem:
                     while True:
                         choice = self.in_card_menu()
                         if choice == 'balance':
-                            print(f"Balance: {account.balance}\n")
+                            print(f"Balance: {account['balance']}\n")
                         elif choice == 'logout':
                             print("You have successfully logged out!")
                             break
