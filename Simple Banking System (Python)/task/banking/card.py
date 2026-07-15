@@ -9,7 +9,6 @@ class Card:
         self.checksum = Card.luhn_algorithm(self.card_prefix + self.account_number)
         self.card_number = self.card_prefix + account_number + str(self.checksum)
         self.pin = ''.join(str(random.randint(0, 9)) for _ in range(4))
-        self.balance = 0
 
     @staticmethod
     def luhn_algorithm(digits: str) -> int:
