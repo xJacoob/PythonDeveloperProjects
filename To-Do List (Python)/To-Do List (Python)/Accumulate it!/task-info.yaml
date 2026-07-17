@@ -1,0 +1,20 @@
+type: edu
+files:
+  - name: todolist/todolist.py
+    visible: true
+    learner_created: false
+  - name: todolist/to_do_list.py
+    visible: true
+    learner_created: false
+  - name: test/__init__.py
+    learner_created: false
+  - name: test/tests.py
+    learner_created: false
+  - name: tests.py
+    learner_created: false
+feedback_link: https://hyperskill.org/projects/105/stages/571/implement#comment
+status: Failed
+feedback:
+  message: "Wrong answer in test #1"
+  time: "Fri, 17 Jul 2026 20:52:28 UTC"
+record: -1

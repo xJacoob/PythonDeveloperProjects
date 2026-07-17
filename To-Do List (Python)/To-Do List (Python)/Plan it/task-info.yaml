@@ -1,0 +1,24 @@
+type: edu
+custom_name: Plan it!
+files:
+  - name: test/__init__.py
+    visible: true
+    learner_created: false
+  - name: test/tests.py
+    visible: true
+    learner_created: false
+  - name: todolist/todolist.py
+    visible: true
+    learner_created: false
+  - name: tests.py
+    visible: true
+    learner_created: false
+  - name: todolist/to_do_list.py
+    visible: true
+    learner_created: true
+feedback_link: https://hyperskill.org/projects/105/stages/570/implement#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Fri, 17 Jul 2026 20:43:07 UTC"
+record: -1
