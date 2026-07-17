@@ -1,0 +1,15 @@
+type: edu
+custom_name: Plan it!
+files:
+  - name: test/__init__.py
+    learner_created: false
+  - name: test/tests.py
+    learner_created: false
+  - name: todolist/todolist.py
+    visible: true
+    learner_created: false
+  - name: tests.py
+    learner_created: false
+feedback_link: https://hyperskill.org/projects/105/stages/570/implement#comment
+status: Unchecked
+record: -1
