@@ -1,4 +1,3 @@
-from datetime import date
 from sqlalchemy import create_engine, Column, Integer, String, Date
 from sqlalchemy.orm import declarative_base, sessionmaker
 
@@ -10,7 +9,7 @@ class Task(Base):
 
     id = Column(Integer, primary_key=True)
     task = Column(String)
-    deadline = Column(Date, default=date.today)
+    deadline = Column(Date)
 
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
