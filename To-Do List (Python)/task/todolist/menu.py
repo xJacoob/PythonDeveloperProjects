@@ -1,6 +1,5 @@
 from datetime import date, datetime, timedelta
 from models import Task, Session
-from sqlalchemy import asc
 
 class Menu:
     def __init__(self):
@@ -15,15 +14,19 @@ class Menu:
                 self.show_weekly_tasks()
             elif answer == "all":
                 self.all_tasks()
+            elif answer == "missed":
+                self.missed_tasks()
             elif answer == "add":
                 self.add_task()
+            elif answer == "delete":
+                self.delete_task()
             elif answer == "exit":
                 print("\nBye!")
                 exit()
 
     @staticmethod
     def menu():
-        user_input = input("1) Today's tasks\n2) Week's tasks\n3) All tasks\n4) Add a task\n0) Exit\n> ")
+        user_input = input("1) Today's tasks\n2) Week's tasks\n3) All tasks\n4) Missed tasks\n5) Add a task\n6) Delete a task\n0) Exit\n> ")
         if user_input == "1":
             return "today"
         elif user_input == "2":
@@ -31,7 +34,11 @@ class Menu:
         elif user_input == "3":
             return "all"
         elif user_input == "4":
+            return "missed"
+        elif user_input == "5":
             return "add"
+        elif user_input == "6":
+            return "delete"
         elif user_input == "0":
             return "exit"
 
@@ -89,3 +96,28 @@ class Menu:
             for index, task in enumerate(all_tasks):
                 print(f"{index + 1}. {task.task}. {task.deadline.day} {task.deadline.strftime('%b')}")
             print("")
+
+    def missed_tasks(self):
+        missed_tasks = self.session.query(Task).filter(Task.deadline < date.today()).all()
+
+        print(f"\nMissed tasks:")
+        if not missed_tasks:
+            print("All tasks have been completed\n")
+        else:
+            for index, task in enumerate(missed_tasks):
+                print(f"{index + 1}. {task.task}. {task.deadline.day} {task.deadline.strftime('%b')}")
+            print("")
+
+    def delete_task(self):
+        all_tasks = self.session.query(Task).order_by(Task.deadline.asc()).all()
+        print("\nChoose the number of the task you want to delete:")
+        if not all_tasks:
+            print("Nothing to delete\n")
+        else:
+            for index, task in enumerate(all_tasks):
+                print(f"{index + 1}. {task.task}. {task.deadline.day} {task.deadline.strftime('%b')}")
+            user_input = input("> ")
+            task = all_tasks[int(user_input) - 1]
+            self.session.delete(task)
+            self.session.commit()
+            print("The task has been deleted!\n")
