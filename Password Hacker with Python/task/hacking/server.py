@@ -1,5 +1,6 @@
 import socket
 import json
+import time
 
 host = 'localhost'
 port = 9090
@@ -36,7 +37,7 @@ while True:
     elif req_password == password:
         response = {'result': 'Connection success!'}
     elif password.startswith(req_password):
-        response = {'result': 'Exception happened during login'}
+        response = {'result': 'Wrong password!'}
     else:
         response = {'result': 'Wrong password!'}
 
@@ -44,3 +45,4 @@ while True:
 
 conn.close()
 server.close()
+
