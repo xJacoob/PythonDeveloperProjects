@@ -6,8 +6,7 @@ def main():
     connection = LingueePage(headers)
 
     translator = Translator(connection)
-    result1, result2 = translator.fetcher()
-    print(f"Translations\n{result1}\n{result2}")
+    translator.output()
 
 if __name__ == "__main__":
     main()
