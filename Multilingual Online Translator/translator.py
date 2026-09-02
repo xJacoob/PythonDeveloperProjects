@@ -6,7 +6,7 @@ def main():
     connection = LingueePage(headers)
 
     translator = Translator(connection)
-    translator.output()
+    translator.to_file()
 
 if __name__ == "__main__":
     main()
