@@ -3,84 +3,100 @@ from bs4 import BeautifulSoup
 class Translator:
     def __init__(self, connection):
         self.connection = connection
+        self.languages = {
+            1: 'German',
+            2: 'English',
+            3: 'Spanish',
+            4: 'French',
+            5: 'Japanese',
+            6: 'Dutch',
+            7: 'Polish',
+            8: 'Portuguese',
+            9: 'Romanian',
+            10: 'Russian'
+        }
 
-    @staticmethod
-    def translate():
-        user_lan = input('Type "en" if you want to translate from French into English,'
-                            'or "fr" if you want to translate from English into French:\n> ')
+    def translate(self):
+        target_languages = []
+        print("Hello, welcome to the translator. Translator supports:")
+        for idx, language in self.languages.items():
+            print(f"{idx}. {language}")
 
-        print("Type the word you want to translate:")
-        user_word = input("> ")
-        print(f'You chose "{user_lan}" as a language to translate "{user_word}".')
+        user_number = input("Type the number of your language:\n> ")
+        target_number = input("Type the number of language you want to translate to or '0' to translate to all languages:\n> ")
+        user_word = input("Type the word you want to translate:\n> ")
 
-        if user_lan == 'fr':
-            return f"https://www.linguee.com/english-french/search?source=auto&query={user_word}", user_lan
+        user_language = self.languages[int(user_number)].lower()
+
+        if target_number == '0':
+            for key, value in self.languages.items():
+                if key == int(user_number):
+                    continue
+                else:
+                    target_languages.append(value.lower())
         else:
-            return f"https://www.linguee.com/french-english/search?source=auto&query={user_word}", user_lan
+            target_languages.append(self.languages[int(target_number)].lower())
+
+        return user_language, target_languages, user_word
 
     def fetcher(self):
-        url, lan = self.translate()
-        page = self.connection.fetch(url)
+        user_language, target_languages, user_word = self.translate()
+        result = []
 
-        if page.status_code == 200:
-            print("200 OK")
+        for target in target_languages:
+            url = f"https://www.linguee.com/{user_language}-{target}/search?source=auto&query={user_word}"
+            page = self.connection.fetch(url)
 
-        soup = BeautifulSoup(page.content, 'html.parser')
-        valid_class = soup.find('div', class_='exact')
+            soup = BeautifulSoup(page.content, 'html.parser')
+            valid_class = soup.find('div', class_='exact')
 
-        if lan == "fr":
-            html_words = valid_class.find_all('a', class_='dictLink', href=lambda h: h.startswith('/french-english'))
-        else:
-            html_words = valid_class.find_all('a', class_='dictLink', href=lambda h: h.startswith('/english-french'))
-
-        words = [word.text for word in html_words]
-
-        examples = []
-
-        context_line = valid_class.find_all('span', class_='tag_e')
-
-        for line in context_line:
-            source_span = line.find('span', class_='tag_s')
-            target_span = line.find('span', class_='tag_t')
-            if source_span and target_span:
-                examples.append(source_span.text)
-                examples.append(target_span.text)
-
-        examples_container = soup.find('div', class_='example_lines inexact')
-
-        if examples_container is not None:
-            if lan == "fr":
-                source_link = examples_container.find_all('a', class_='dictLink', href=lambda h: h.startswith('/english-french'))
-                target_link = examples_container.find_all('a', class_='dictLink', href=lambda h: h.startswith('/french-english'))
+            if valid_class:
+                html_words = valid_class.find_all('a', class_='dictLink', href=lambda h: h.startswith(f'/{target}-{user_language}'))
+                words = [word.text for word in html_words]
             else:
-                source_link = examples_container.find_all('a', class_='dictLink', href=lambda h: h.startswith('/french-english'))
-                target_link = examples_container.find_all('a', class_='dictLink', href=lambda h: h.startswith('/english-french'))
+                words = []
 
+            examples = []
+            examples_container = soup.find('div', class_='example_lines inexact')
 
-            for source, target in zip(source_link, target_link):
-                examples.append(source.text)
-                examples.append(target.text)
+            if examples_container is not None:
+                source_link = examples_container.find_all('a', class_='dictLink', href=lambda h: h.startswith(f'/{user_language}-{target}'))
+                target_link = examples_container.find_all('a', class_='dictLink', href=lambda h: h.startswith(f'/{target}-{user_language}'))
 
-        return words, examples, lan
+                for src, tar in zip(source_link, target_link):
+                    examples.append(src.text)
+                    examples.append(tar.text)
 
-    def output(self):
-        words, examples, lan = self.fetcher()
+            result.append((target, words, examples))
 
-        if lan == "fr":
-            print("\nFrench Translations:")
-        else:
-            print("\nEnglish Translations:")
+        return result, user_word
 
-        for word in words:
-            print(word)
+    def to_file(self):
+        result, user_word = self.fetcher()
 
-        if lan == "fr":
-            print("\nFrench Examples:")
-        else:
-            print("\nEnglish Examples:")
+        with open(f"{user_word}.txt", 'w', encoding='utf-8') as f:
+            for lan, words, examples in result:
+                print(f"{lan.capitalize()} Translations:", file=f)
+                print(f"{lan.capitalize()} Translations:")
 
-        for i in range(0, len(examples), 2):
-            pair = examples[i:i + 2]
-            print(*pair, sep='\n')
-            if i + 2 < len(examples):
+                if words:
+                    print(words[0], file=f)
+                    print(words[0])
+                else:
+                    print("No translations found.", file=f)
+                    print("No translations found.")
+
+                print(f"\n{lan.capitalize()} Examples:", file=f)
+                print(f"\n{lan.capitalize()} Examples:")
+                if examples:
+                    src, trg = examples[0], examples[1]
+                    print(src, file=f)
+                    print(trg, file=f)
+                    print(src)
+                    print(trg)
+                else:
+                    print("No examples found.", file=f)
+                    print("No examples found.")
+
+                print(file=f)
                 print()
