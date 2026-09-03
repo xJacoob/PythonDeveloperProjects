@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import sys
 
 class Translator:
     def __init__(self, connection):
@@ -16,36 +17,31 @@ class Translator:
             10: 'Russian'
         }
 
-    def translate(self):
+    def fetcher(self, user_language, target_language, word):
         target_languages = []
-        print("Hello, welcome to the translator. Translator supports:")
-        for idx, language in self.languages.items():
-            print(f"{idx}. {language}")
 
-        user_number = input("Type the number of your language:\n> ")
-        target_number = input("Type the number of language you want to translate to or '0' to translate to all languages:\n> ")
-        user_word = input("Type the word you want to translate:\n> ")
+        if target_language.capitalize() not in self.languages.values() and target_language != 'all':
+            print(f"Sorry, the program doesn't support {target_language}")
+            sys.exit()
 
-        user_language = self.languages[int(user_number)].lower()
-
-        if target_number == '0':
+        if target_language == 'all':
             for key, value in self.languages.items():
-                if key == int(user_number):
+                if value.lower() == user_language.lower():
                     continue
                 else:
                     target_languages.append(value.lower())
         else:
-            target_languages.append(self.languages[int(target_number)].lower())
+            target_languages.append(target_language.lower())
 
-        return user_language, target_languages, user_word
-
-    def fetcher(self):
-        user_language, target_languages, user_word = self.translate()
         result = []
 
         for target in target_languages:
-            url = f"https://www.linguee.com/{user_language}-{target}/search?source=auto&query={user_word}"
+            url = f"https://www.linguee.com/{user_language}-{target}/search?source=auto&query={word}"
             page = self.connection.fetch(url)
+
+            if page.status_code != 200:
+                print(f"Something wrong with your internet connection")
+                sys.exit()
 
             soup = BeautifulSoup(page.content, 'html.parser')
             valid_class = soup.find('div', class_='exact')
@@ -69,10 +65,14 @@ class Translator:
 
             result.append((target, words, examples))
 
-        return result, user_word
+        if all(not word and not example for lan, word, example in result):
+            print(f"Sorry, unable to find {word}")
+            sys.exit()
 
-    def to_file(self):
-        result, user_word = self.fetcher()
+        return result, word
+
+    def to_file(self, user_language, target_language, word):
+        result, user_word = self.fetcher(user_language, target_language, word)
 
         with open(f"{user_word}.txt", 'w', encoding='utf-8') as f:
             for lan, words, examples in result:
